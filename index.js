@@ -1,6 +1,7 @@
 'use strict';
-function getDogImage(num) {
-  fetch(`https://dog.ceo/api/breeds/image/random/${num}`)
+function getDogImage(num, breed) {
+  fetch(`https://dog.ceo/api/breed/${breed}/images/random/${num}`)
+
     .then(response => response.json())
     .then(responseJson => 
       displayResults(responseJson))
@@ -9,8 +10,6 @@ function getDogImage(num) {
 
 function displayResults(responseJson) {
   console.log(responseJson);
-  
-  
   let x = responseJson.message.length;
   console.log(x);
   //replace the existing image with the new one
@@ -28,19 +27,21 @@ function displayResults(responseJson) {
 function watchForm() {
   $('form').submit(event => {
     event.preventDefault();
-    let numbPic = $('.js-text').val();
-    console.log(numbPic)
-    if (!numbPic) {
-      getDogImage(3)
+    $('.results-img').empty();
+    let numbPic = $('.js-number').val();
+    $('.js-number').val('');
+    let breed = $('.js-text').val();
+    breed = $('.js-text').val()
+    //dealing with number input
+    
+    if (!numbPic && breed) {
+      getDogImage(3,breed)
     }
-    else if (numbPic<1 ||numbPic >50){
-       $('.results-img').replaceWith(
-    '<h3 class = "results-img">Invalid</h3>'
-        )
-      $('.results').removeClass('hidden');
-      return}
+    else if(numbPic&&!breed){
+      getDogImage(numbPic, husky)
+    }
     else{
-      getDogImage(numbPic)
+      getDogImage(numbPic, breed)
     };
   });
 }
